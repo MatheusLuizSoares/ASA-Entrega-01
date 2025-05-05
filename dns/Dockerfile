@@ -1,6 +1,8 @@
-FROM ubuntu/bind9:latest
-COPY named.conf.local /etc/bind/
-COPY db.asa.br /etc/bind/
-RUN chown root:bind /etc/bind/*
-EXPOSE 53/udp 53/tcp
-CMD ["named", "-g"]
+FROM ubuntu:20.04
+
+RUN apt-get update &&     DEBIAN_FRONTEND=noninteractive apt-get install -y bind9 dnsutils &&     rm -rf /var/lib/apt/lists/*
+
+COPY named.conf.local /etc/bind/named.conf.local
+COPY db.asa.br /etc/bind/db.asa.br
+
+CMD ["/usr/sbin/named", "-g"]
