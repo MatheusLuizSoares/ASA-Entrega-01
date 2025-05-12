@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    networks:
+      - rede_asa
+
+  dns:
+    build: ./dns
+    networks:
+      - rede_asa
+    command: named -g
+
+  ssh:
+    build: ./ssh
+    networks:
+      - rede_asa
+    command: bash /ssh-start
+
+networks:
+  rede_asa:
+    driver: bridge
